@@ -1,13 +1,33 @@
 <template>
-  <ErrorBoundary>
-    <router-view />
-    <AppToast />
-  </ErrorBoundary>
+  <AppLoader v-if="loading" @done="loading = false" />
+
+  <Transition name="page-reveal">
+    <ErrorBoundary v-if="!loading">
+      <router-view v-slot="{ Component, route }">
+        <Transition name="page" mode="out-in">
+          <component :is="Component" :key="route.path" />
+        </Transition>
+      </router-view>
+      <AppToast />
+    </ErrorBoundary>
+  </Transition>
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import AppLoader from './components/AppLoader.vue'
 import AppToast from './components/AppToast.vue'
 import ErrorBoundary from './components/ErrorBoundary.vue'
+
+const router  = useRouter()
+const loading = ref(true)
+
+onMounted(async () => {
+  await router.isReady()
+  // AppLoader controls its own minimum display time (1.4s)
+  // and emits 'done' when its exit animation finishes
+})
 </script>
 
 <style>
@@ -266,9 +286,16 @@ button, input, textarea, select { font-family: inherit; }
 /* Focus */
 :focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 
-/* Page transitions */
+/* ══════════════════════════════════════════════
+   PAGE TRANSITIONS
+══════════════════════════════════════════════ */
+/* App reveal after loader */
+.page-reveal-enter-active { transition: opacity .5s ease, transform .5s ease; }
+.page-reveal-enter-from   { opacity: 0; transform: translateY(10px); }
+
+/* Route-to-route transitions */
 .page-enter-active,
-.page-leave-active { transition: opacity .2s ease, transform .2s ease; }
-.page-enter-from   { opacity: 0; transform: translateY(8px); }
+.page-leave-active { transition: opacity .18s ease, transform .18s ease; }
+.page-enter-from   { opacity: 0; transform: translateY(6px); }
 .page-leave-to     { opacity: 0; transform: translateY(-4px); }
 </style>
