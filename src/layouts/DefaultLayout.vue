@@ -19,8 +19,17 @@
           <router-link to="/menu" class="nav-link" active-class="nav-active">
             {{ t('القائمة', 'Menu') }}
           </router-link>
-          <router-link to="/" class="nav-link">
+          <router-link to="/branches" class="nav-link" active-class="nav-active">
             {{ t('الفروع', 'Branches') }}
+          </router-link>
+          <router-link to="/about" class="nav-link" active-class="nav-active">
+            {{ t('من نحن', 'About') }}
+          </router-link>
+          <router-link to="/news" class="nav-link" active-class="nav-active">
+            {{ t('الأخبار', 'News') }}
+          </router-link>
+          <router-link to="/contact" class="nav-link" active-class="nav-active">
+            {{ t('تواصل معنا', 'Contact') }}
           </router-link>
           <router-link v-if="auth.isAuthenticated" to="/add" class="nav-link" active-class="nav-active">
             {{ t('إضافة فرع', 'Add Branch') }}
@@ -104,9 +113,9 @@
             <h3 class="footer-col-title">{{ t('تعرف علينا', 'About Us') }}</h3>
             <ul class="footer-col-links">
               <li><router-link to="/" class="footer-link">{{ t('الرئيسية', 'Home') }}</router-link></li>
-              <li><router-link to="/" class="footer-link">{{ t('من نحن', 'About') }}</router-link></li>
-              <li><router-link to="/" class="footer-link">{{ t('الأخبار', 'News') }}</router-link></li>
-              <li><router-link to="/" class="footer-link">{{ t('تواصل معنا', 'Contact') }}</router-link></li>
+              <li><router-link to="/about" class="footer-link">{{ t('من نحن', 'About') }}</router-link></li>
+              <li><router-link to="/news" class="footer-link">{{ t('الأخبار', 'News') }}</router-link></li>
+              <li><router-link to="/contact" class="footer-link">{{ t('تواصل معنا', 'Contact') }}</router-link></li>
             </ul>
           </div>
 
@@ -126,12 +135,12 @@
           <div class="footer-col">
             <h3 class="footer-col-title">{{ t('الفروع', 'Branches') }}</h3>
             <ul class="footer-col-links">
-              <li><router-link to="/" class="footer-link">{{ t('مصر', 'Egypt') }}</router-link></li>
-              <li><router-link to="/" class="footer-link">{{ t('الإمارات العربية المتحدة', 'UAE') }}</router-link></li>
-              <li><router-link to="/" class="footer-link">{{ t('المملكة العربية السعودية', 'Saudi Arabia') }}</router-link></li>
-              <li><router-link to="/" class="footer-link">{{ t('فرع أبحر الشمالية', 'Abhur Al Shamaliyah') }}</router-link></li>
-              <li><router-link to="/" class="footer-link">{{ t('فرع شارع الأمير سلطان', 'Prince Sultan St.') }}</router-link></li>
-              <li><router-link to="/" class="footer-link">{{ t('فرع مكة', 'Makkah') }}</router-link></li>
+              <li><router-link to="/branches" class="footer-link">{{ t('مصر', 'Egypt') }}</router-link></li>
+              <li><router-link to="/branches" class="footer-link">{{ t('الإمارات العربية المتحدة', 'UAE') }}</router-link></li>
+              <li><router-link to="/branches" class="footer-link">{{ t('المملكة العربية السعودية', 'Saudi Arabia') }}</router-link></li>
+              <li><router-link to="/branches" class="footer-link">{{ t('فرع أبحر الشمالية', 'Abhur Al Shamaliyah') }}</router-link></li>
+              <li><router-link to="/branches" class="footer-link">{{ t('فرع شارع الأمير سلطان', 'Prince Sultan St.') }}</router-link></li>
+              <li><router-link to="/branches" class="footer-link">{{ t('فرع مكة', 'Makkah') }}</router-link></li>
             </ul>
           </div>
 
