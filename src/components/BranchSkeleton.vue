@@ -1,54 +1,41 @@
 <template>
-  <!-- Grid skeleton: 6 placeholder cards -->
   <div v-if="mode === 'grid'" class="skeleton-grid" aria-busy="true" aria-label="Loading branches…">
-    <div v-for="n in count" :key="n" class="sk-card">
-      <!-- Top row: badge + fav -->
+    <div v-for="n in count" :key="n" class="card sk-card">
       <div class="sk-row">
-        <span class="sk-block shimmer" style="width:72px;height:22px;border-radius:20px"></span>
-        <span class="sk-block shimmer" style="width:24px;height:24px;border-radius:50%"></span>
+        <span class="shimmer" style="width:72px;height:22px;border-radius:var(--r-pill)"></span>
+        <span class="shimmer" style="width:22px;height:22px;border-radius:var(--r-pill)"></span>
       </div>
-
-      <!-- Title block -->
-      <div class="sk-col" style="gap:6px">
-        <span class="sk-block shimmer" style="width:75%;height:16px"></span>
-        <span class="sk-block shimmer" style="width:55%;height:13px"></span>
+      <div style="display:flex;flex-direction:column;gap:var(--sp-2)">
+        <span class="shimmer" style="width:78%;height:15px"></span>
+        <span class="shimmer" style="width:54%;height:12px"></span>
       </div>
-
-      <!-- Detail rows -->
-      <div class="sk-detail-box">
-        <div v-for="d in 3" :key="d" class="sk-row" style="gap:8px">
-          <span class="sk-block shimmer" style="width:18px;height:14px;flex-shrink:0;border-radius:4px"></span>
-          <span class="sk-block shimmer" :style="`width:${60 + d * 8}%;height:13px`"></span>
+      <div class="sk-details">
+        <div v-for="d in 3" :key="d" class="sk-row" style="gap:var(--sp-2)">
+          <span class="shimmer" style="width:16px;height:13px;flex-shrink:0"></span>
+          <span class="shimmer" :style="`width:${58 + d * 8}%;height:12px`"></span>
         </div>
       </div>
-
-      <!-- Action buttons (admin shimmer hint) -->
-      <div class="sk-row" style="gap:8px">
-        <span class="sk-block shimmer" style="flex:1;height:32px;border-radius:8px"></span>
-        <span class="sk-block shimmer" style="flex:1;height:32px;border-radius:8px"></span>
+      <div class="sk-row" style="gap:var(--sp-2)">
+        <span class="shimmer" style="flex:1;height:30px;border-radius:var(--r-lg)"></span>
+        <span class="shimmer" style="flex:1;height:30px;border-radius:var(--r-lg)"></span>
       </div>
     </div>
   </div>
 
-  <!-- Table skeleton: rows -->
-  <div v-else class="sk-table-wrap" aria-busy="true" aria-label="Loading branches…">
-    <!-- fake header -->
+  <div v-else class="sk-table" aria-busy="true" aria-label="Loading branches…">
     <div class="sk-table-head">
-      <span v-for="w in ['25%','12%','14%','18%','6%','15%']" :key="w"
-        class="sk-block shimmer" :style="`width:${w};height:13px`"></span>
+      <span v-for="w in ['28%','12%','15%','20%','5%','15%']" :key="w"
+        class="shimmer" :style="`width:${w};height:12px`"></span>
     </div>
     <div v-for="n in count" :key="n" class="sk-table-row">
-      <div class="sk-col" style="gap:5px;width:25%">
-        <span class="sk-block shimmer" style="width:90%;height:14px"></span>
-        <span class="sk-block shimmer" style="width:55%;height:11px;border-radius:10px"></span>
+      <div style="width:28%;display:flex;flex-direction:column;gap:var(--sp-1)">
+        <span class="shimmer" style="width:88%;height:13px"></span>
+        <span class="shimmer" style="width:50%;height:10px;border-radius:var(--r-pill)"></span>
       </div>
-      <span class="sk-block shimmer" style="width:12%;height:13px"></span>
-      <span class="sk-block shimmer" style="width:14%;height:13px"></span>
-      <span class="sk-block shimmer" style="width:18%;height:13px"></span>
-      <span class="sk-block shimmer" style="width:6%;height:18px;border-radius:50%"></span>
-      <div class="sk-row" style="width:15%;gap:6px">
-        <span class="sk-block shimmer" style="flex:1;height:26px;border-radius:6px"></span>
-        <span class="sk-block shimmer" style="flex:1;height:26px;border-radius:6px"></span>
+      <span v-for="w in ['12%','15%','20%','5%']" :key="w" class="shimmer" :style="`width:${w};height:12px`"></span>
+      <div style="width:15%;display:flex;gap:var(--sp-2)">
+        <span class="shimmer" style="flex:1;height:26px;border-radius:var(--r-md)"></span>
+        <span class="shimmer" style="flex:1;height:26px;border-radius:var(--r-md)"></span>
       </div>
     </div>
   </div>
@@ -62,71 +49,47 @@ defineProps({
 </script>
 
 <style scoped>
-/* ── Grid layout ── */
+@keyframes fadeIn { from { opacity:0; transform:translateY(5px); } to { opacity:1; } }
+
 .skeleton-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 18px;
+  grid-template-columns: var(--grid-cards);
+  gap: var(--sp-4);
 }
 
-/* ── Card shape ── */
 .sk-card {
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: 18px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  animation: fadeIn .4s ease;
+  padding: var(--sp-5);
+  display: flex; flex-direction: column; gap: var(--sp-4);
+  animation: fadeIn .35s ease;
 }
 
-@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; } }
+.sk-row { display: flex; align-items: center; justify-content: space-between; }
 
-.sk-row   { display: flex; align-items: center; justify-content: space-between; }
-.sk-col   { display: flex; flex-direction: column; }
-.sk-block { display: inline-block; border-radius: 8px; }
-
-.sk-detail-box {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  background: var(--bg);
-  border-radius: 10px;
-  padding: 12px;
+.sk-details {
+  display: flex; flex-direction: column; gap: var(--sp-2);
+  background: var(--bg); border-radius: var(--r-lg); padding: var(--sp-3);
 }
-.sk-detail-box .sk-row { justify-content: flex-start; }
+.sk-details .sk-row { justify-content: flex-start; }
 
-/* ── Table layout ── */
-.sk-table-wrap {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  overflow: hidden;
+.sk-table {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r-2xl); overflow: hidden;
 }
-
 .sk-table-head {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 18px;
-  background: var(--bg);
-  border-bottom: 1px solid var(--border);
+  display: flex; gap: var(--sp-3); align-items: center;
+  padding: var(--sp-3) var(--sp-5);
+  background: var(--bg); border-bottom: 1px solid var(--border);
 }
-
 .sk-table-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px 18px;
+  display: flex; gap: var(--sp-3); align-items: center;
+  padding: var(--sp-4) var(--sp-5);
   border-bottom: 1px solid var(--border);
-  animation: fadeIn .4s ease;
+  animation: fadeIn .35s ease;
 }
 .sk-table-row:last-child { border-bottom: none; }
 
-/* ── Responsive ── */
 @media (max-width: 640px) {
   .skeleton-grid { grid-template-columns: 1fr; }
-  .sk-table-wrap { display: none; }
+  .sk-table { display: none; }
 }
 </style>

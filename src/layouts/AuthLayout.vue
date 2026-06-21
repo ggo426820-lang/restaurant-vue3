@@ -1,8 +1,8 @@
 <template>
   <div class="auth-shell">
-    <div class="auth-card">
+    <div class="auth-card card">
       <div class="auth-brand">
-        <div class="brand-logo">🍲</div>
+        <div class="auth-logo">🍲</div>
         <div class="brand-text">
           <span class="brand-ar">كشري أبو طارق</span>
           <span class="brand-en">Koshary Abou Tarek</span>
@@ -17,56 +17,33 @@
 .auth-shell {
   min-height: 100vh;
   background: linear-gradient(135deg, #f8f0f0 0%, #fff5f5 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
+  display: flex; align-items: center; justify-content: center;
+  padding: var(--sp-6);
 }
 [data-theme="dark"] .auth-shell {
-  background: linear-gradient(135deg, #120808 0%, #1e0e0e 100%);
+  background: linear-gradient(135deg, var(--bg) 0%, var(--surface) 100%);
 }
 .auth-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 24px;
-  padding: 44px 40px;
-  width: 100%;
-  max-width: 440px;
-  box-shadow: 0 12px 48px rgba(200,16,46,.1);
+  padding: var(--sp-12) var(--sp-10);
+  width: 100%; max-width: 440px;
+  box-shadow: 0 12px 48px var(--primary-shadow);
+  border-radius: var(--r-3xl);
 }
 .auth-brand {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  margin-bottom: 32px;
-  text-decoration: none;
-}
-.brand-logo {
-  width: 52px; height: 52px;
-  background: var(--primary);
-  border-radius: 16px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 1.8rem;
-  box-shadow: 0 4px 16px rgba(200,16,46,.3);
+  gap: var(--sp-3); margin-bottom: var(--sp-8);
 }
-.brand-text {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+.auth-logo {
+  width: 52px; height: 52px;
+  background: var(--primary); border-radius: var(--r-xl);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.8rem; box-shadow: var(--shadow-primary);
 }
-.brand-ar {
-  font-size: 1.1rem;
-  font-weight: 900;
-  color: var(--primary);
-  direction: rtl;
-  line-height: 1;
-}
-.brand-en {
-  font-size: .72rem;
-  font-weight: 600;
-  color: var(--text-muted);
-  letter-spacing: .04em;
-  line-height: 1;
+.brand-text { display: flex; flex-direction: column; gap: 2px; }
+.brand-ar { font-size: 1.05rem; font-weight: 900; color: var(--primary); line-height: 1; }
+.brand-en { font-size: .7rem; font-weight: 600; color: var(--text-muted); letter-spacing: .04em; line-height: 1; }
+
+@media (max-width: 480px) {
+  .auth-card { padding: var(--sp-8) var(--sp-6); }
 }
 </style>

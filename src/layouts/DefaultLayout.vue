@@ -13,15 +13,15 @@
 
       <nav class="navbar-links" aria-label="Main navigation">
         <router-link to="/" class="nav-link">
-          <span aria-hidden="true">🏠</span>
+          <AppIcon name="home" :size="17" aria-hidden="true" />
           <span class="nav-label">Branches</span>
         </router-link>
         <router-link to="/menu" class="nav-link">
-          <span aria-hidden="true">🍽️</span>
+          <AppIcon name="utensils" :size="17" aria-hidden="true" />
           <span class="nav-label">Menu</span>
         </router-link>
         <router-link v-if="auth.isAuthenticated" to="/add" class="nav-link">
-          <span aria-hidden="true">➕</span>
+          <AppIcon name="plus" :size="17" aria-hidden="true" />
           <span class="nav-label">Add</span>
         </router-link>
       </nav>
@@ -29,24 +29,29 @@
       <div class="navbar-actions">
         <button
           v-if="canInstall"
-          class="install-btn"
+          class="install-btn btn btn-sm"
           @click="install"
           aria-label="Install app"
-        >📲 <span class="install-label">Install</span></button>
+        >
+          <AppIcon name="download" :size="15" aria-hidden="true" />
+          <span class="install-label">Install</span>
+        </button>
 
         <button
-          class="icon-btn"
+          class="icon-btn dark-btn"
           @click="toggleDark"
-          :title="dark ? 'Light mode' : 'Dark mode'"
           :aria-label="dark ? 'Switch to light mode' : 'Switch to dark mode'"
-        ><span aria-hidden="true">{{ dark ? '☀️' : '🌙' }}</span></button>
+          :title="dark ? 'Light mode' : 'Dark mode'"
+        >
+          <AppIcon :name="dark ? 'sun' : 'moon'" :size="18" color="rgba(255,255,255,.85)" />
+        </button>
 
         <!-- Authenticated user menu -->
         <div
           v-if="auth.isAuthenticated"
           class="user-menu"
           @click="menuOpen = !menuOpen"
-          ref="userMenu"
+          ref="userMenuEl"
           role="button"
           :aria-expanded="menuOpen"
           aria-haspopup="true"
@@ -56,17 +61,19 @@
         >
           <div class="avatar" aria-hidden="true">{{ initial }}</div>
           <span class="username">{{ auth.userName }}</span>
-          <span class="caret" aria-hidden="true">▾</span>
+          <AppIcon name="chevron-down" :size="14" color="rgba(255,255,255,.65)" aria-hidden="true" />
+
           <div class="dropdown" v-if="menuOpen" role="menu">
             <button class="dropdown-item" role="menuitem" @click="doLogout">
-              <span aria-hidden="true">🚪</span> Log out
+              <AppIcon name="log-out" :size="16" aria-hidden="true" />
+              Log out
             </button>
           </div>
         </div>
 
-        <!-- Guest login button -->
+        <!-- Guest login -->
         <router-link v-else to="/login" class="login-btn" aria-label="Sign in to manage branches">
-          <span aria-hidden="true">🔑</span>
+          <AppIcon name="log-in" :size="17" aria-hidden="true" />
           <span class="login-label">Sign in</span>
         </router-link>
       </div>
@@ -78,15 +85,18 @@
 
     <footer class="app-footer" role="contentinfo">
       <div class="footer-inner">
-        <div class="footer-brand">🍲 كشري أبو طارق — Koshary Abou Tarek</div>
+        <div class="footer-brand">كشري أبو طارق — Koshary Abou Tarek</div>
         <nav class="footer-links" aria-label="Footer navigation">
           <router-link to="/" class="footer-nav-link">Branches</router-link>
           <router-link to="/menu" class="footer-nav-link">Menu</router-link>
         </nav>
-        <div class="footer-info">
-          <a href="tel:16011" class="footer-link">📞 Hotline: <strong>16011</strong></a>
-          <span>🛵 Delivery: 7 AM – 10 PM</span>
-          <span>🌍 Egypt · Saudi Arabia · UAE</span>
+        <div class="footer-meta">
+          <a href="tel:16011" class="footer-link">
+            <AppIcon name="phone" :size="14" aria-hidden="true" />
+            Hotline <strong>16011</strong>
+          </a>
+          <span>🛵 Delivery 7 AM – 10 PM</span>
+          <span>Egypt · Saudi Arabia · UAE</span>
         </div>
         <div class="footer-copy">© 2025 Koshary Abou Tarek. All rights reserved.</div>
       </div>
@@ -100,23 +110,25 @@ import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/authStore'
 import { useDarkMode } from '../composables/useDarkMode'
 import { usePWAInstall } from '../composables/usePWAInstall'
+import AppIcon from '../components/AppIcon.vue'
 
 const auth = useAuthStore()
 const router = useRouter()
 const { dark, toggle: toggleDark } = useDarkMode()
 const { canInstall, install } = usePWAInstall()
-const menuOpen = ref(false)
-const userMenu = ref(null)
 
-const initial = computed(() => auth.userName?.charAt(0)?.toUpperCase() || '?')
+const menuOpen  = ref(false)
+const userMenuEl = ref(null)
+const initial   = computed(() => auth.userName?.charAt(0)?.toUpperCase() || '?')
 
 function doLogout() {
   auth.logout()
+  menuOpen.value = false
   router.push({ name: 'Home' })
 }
 
 function handleClickOutside(e) {
-  if (userMenu.value && !userMenu.value.contains(e.target)) menuOpen.value = false
+  if (userMenuEl.value && !userMenuEl.value.contains(e.target)) menuOpen.value = false
 }
 
 onMounted(() => document.addEventListener('click', handleClickOutside))
@@ -124,154 +136,142 @@ onUnmounted(() => document.removeEventListener('click', handleClickOutside))
 </script>
 
 <style scoped>
+/* ── Skip link ── */
 .skip-link {
-  position: absolute; top: -100px; left: 16px;
+  position: absolute; top: -100px; left: var(--sp-4);
   background: var(--gold); color: #1a0a0a;
-  padding: 8px 16px; border-radius: 0 0 8px 8px;
-  font-weight: 700; font-size: .9rem; text-decoration: none;
+  padding: var(--sp-2) var(--sp-4);
+  border-radius: 0 0 var(--r-md) var(--r-md);
+  font-weight: 700; font-size: .9rem;
   z-index: 9999; transition: top .15s;
 }
 .skip-link:focus { top: 0; }
 
-.app-shell {
-  min-height: 100vh;
-  display: flex; flex-direction: column;
-  background: var(--bg); color: var(--text);
-}
+/* ── Shell ── */
+.app-shell { min-height: 100vh; display: flex; flex-direction: column; }
 
 /* ── Navbar ── */
 .navbar {
   display: flex; align-items: center;
-  padding: 0 24px; height: 64px;
+  padding: 0 var(--sp-6); height: 62px;
   background: var(--primary);
-  box-shadow: 0 2px 12px rgba(200,16,46,.35);
-  position: sticky; top: 0; z-index: 100; gap: 12px;
+  box-shadow: var(--shadow-primary);
+  position: sticky; top: 0; z-index: 100; gap: var(--sp-3);
 }
 
 .navbar-brand {
-  display: flex; align-items: center; gap: 10px;
+  display: flex; align-items: center; gap: var(--sp-3);
   text-decoration: none; flex-shrink: 0;
 }
 .brand-logo {
-  width: 40px; height: 40px;
-  background: rgba(255,255,255,.15); border-radius: 10px;
+  width: 40px; height: 40px; flex-shrink: 0;
+  background: var(--hero-glass); border: 1.5px solid var(--hero-glass-border);
+  border-radius: var(--r-lg);
   display: flex; align-items: center; justify-content: center;
-  font-size: 1.3rem; border: 1.5px solid rgba(255,255,255,.3); flex-shrink: 0;
+  font-size: 1.3rem;
 }
-.brand-text { display: flex; flex-direction: column; gap: 1px; }
-.brand-ar { font-size: .92rem; font-weight: 800; color: #fff; direction: rtl; line-height: 1; }
-.brand-en { font-size: .65rem; color: rgba(255,255,255,.72); letter-spacing: .03em; line-height: 1; }
+.brand-text { display: flex; flex-direction: column; gap: 1px; line-height: 1; }
+.brand-ar { font-size: .92rem; font-weight: 800; color: #fff; }
+.brand-en { font-size: .65rem; color: rgba(255,255,255,.7); letter-spacing: .02em; }
 
-.navbar-links { display: flex; gap: 2px; flex: 1; }
+/* ── Nav links ── */
+.navbar-links { display: flex; gap: var(--sp-1); flex: 1; }
 .nav-link {
-  display: flex; align-items: center; gap: 5px;
-  padding: 7px 12px; border-radius: 8px;
-  text-decoration: none; color: rgba(255,255,255,.8);
-  font-weight: 500; font-size: .88rem;
-  transition: all .15s; white-space: nowrap;
+  display: flex; align-items: center; gap: var(--sp-2);
+  padding: 7px var(--sp-3); border-radius: var(--r-md);
+  color: rgba(255,255,255,.82); font-weight: 600; font-size: .88rem;
+  text-decoration: none; transition: all .15s;
 }
 .nav-link:hover,
-.nav-link.router-link-exact-active {
-  background: rgba(255,255,255,.2); color: #fff;
-}
+.nav-link.router-link-exact-active { background: rgba(255,255,255,.2); color: #fff; }
 .nav-link:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 
-.navbar-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+/* ── Actions ── */
+.navbar-actions { display: flex; align-items: center; gap: var(--sp-2); flex-shrink: 0; }
 
 .install-btn {
-  display: flex; align-items: center; gap: 5px;
-  background: var(--gold); color: #1a0a0a;
-  border: none; border-radius: 8px; padding: 6px 12px;
-  cursor: pointer; font-size: .8rem; font-weight: 700;
-  transition: opacity .15s; white-space: nowrap;
+  background: var(--gold) !important;
+  color: #1a0a0a !important;
+  border-color: var(--gold) !important;
+  box-shadow: none !important;
 }
-.install-btn:hover { opacity: .88; }
+.install-btn:hover:not(:disabled) { opacity: .88; }
 
-.icon-btn {
-  width: 36px; height: 36px; border: none;
-  background: rgba(255,255,255,.15); border-radius: 50%;
-  cursor: pointer; font-size: 1rem;
-  display: flex; align-items: center; justify-content: center;
-  transition: background .15s; flex-shrink: 0;
-}
-.icon-btn:hover { background: rgba(255,255,255,.28); }
-.icon-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.dark-btn { background: var(--hero-glass); }
+.dark-btn:hover { background: rgba(255,255,255,.24); }
 
+/* ── User menu ── */
 .user-menu {
-  display: flex; align-items: center; gap: 7px;
-  cursor: pointer; padding: 5px 9px; border-radius: 8px;
-  position: relative; transition: background .15s; user-select: none;
+  display: flex; align-items: center; gap: var(--sp-2);
+  cursor: pointer; padding: 5px var(--sp-2); border-radius: var(--r-md);
+  position: relative; user-select: none; transition: background .15s;
 }
-.user-menu:hover { background: rgba(255,255,255,.15); }
-.user-menu:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.user-menu:hover { background: rgba(255,255,255,.16); }
+.user-menu:focus-visible { outline: 2px solid var(--gold); }
+
 .avatar {
-  width: 32px; height: 32px; background: var(--gold); color: #1a0a0a;
-  border-radius: 50%; display: flex; align-items: center; justify-content: center;
-  font-weight: 800; font-size: .88rem; flex-shrink: 0;
+  width: 32px; height: 32px; flex-shrink: 0;
+  background: var(--gold); color: #1a0a0a;
+  border-radius: var(--r-pill);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: .88rem;
 }
 .username { font-weight: 600; font-size: .88rem; color: #fff; }
-.caret { font-size: .65rem; color: rgba(255,255,255,.65); }
 
 .dropdown {
-  position: absolute; top: calc(100% + 6px); right: 0;
+  position: absolute; top: calc(100% + var(--sp-2)); right: 0;
   background: var(--surface); border: 1px solid var(--border);
-  border-radius: 10px; box-shadow: 0 8px 28px rgba(0,0,0,.18);
-  min-width: 140px; overflow: hidden; z-index: 200;
+  border-radius: var(--r-xl); box-shadow: var(--shadow-lg);
+  min-width: 150px; overflow: hidden; z-index: 200;
 }
 .dropdown-item {
-  display: flex; align-items: center; gap: 8px;
-  width: 100%; padding: 11px 16px; font-size: .9rem;
-  cursor: pointer; color: var(--text); background: none;
-  border: none; text-align: left; transition: background .12s;
+  display: flex; align-items: center; gap: var(--sp-2);
+  width: 100%; padding: 11px var(--sp-4);
+  font-size: .9rem; color: var(--text);
+  background: none; border: none; cursor: pointer; text-align: left;
+  transition: background .12s;
 }
 .dropdown-item:hover { background: var(--bg); }
 
+/* ── Login btn ── */
 .login-btn {
-  display: flex; align-items: center; gap: 6px;
-  background: rgba(255,255,255,.18); color: #fff;
-  border: 1.5px solid rgba(255,255,255,.35);
-  border-radius: 8px; padding: 7px 14px;
-  text-decoration: none; font-size: .88rem; font-weight: 700;
-  transition: all .15s; white-space: nowrap;
+  display: flex; align-items: center; gap: var(--sp-2);
+  background: var(--hero-glass); color: #fff;
+  border: 1.5px solid var(--hero-glass-border);
+  border-radius: var(--r-md); padding: 7px var(--sp-4);
+  font-size: .88rem; font-weight: 700; text-decoration: none;
+  transition: background .15s;
 }
-.login-btn:hover { background: rgba(255,255,255,.28); }
-.login-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.login-btn:hover { background: rgba(255,255,255,.26); }
+.login-btn:focus-visible { outline: 2px solid var(--gold); }
 
-/* ── Main ── */
-.main-content { flex: 1; padding: 0; max-width: 1200px; width: 100%; margin: 0 auto; box-sizing: border-box; }
+/* ── Main content ── */
+.main-content { flex: 1; width: 100%; max-width: var(--max-content); margin: 0 auto; }
 
 /* ── Footer ── */
-.app-footer { background: #1a0a0a; color: #c49898; padding: 28px 24px; margin-top: 48px; }
+.app-footer { background: #180a0a; color: rgba(255,255,255,.5); padding: var(--sp-8) var(--sp-6); margin-top: var(--sp-12); }
 .footer-inner {
-  max-width: 900px; margin: 0 auto; text-align: center;
-  display: flex; flex-direction: column; gap: 10px;
+  max-width: var(--max-body); margin: 0 auto; text-align: center;
+  display: flex; flex-direction: column; gap: var(--sp-3);
 }
 .footer-brand { font-size: 1rem; font-weight: 800; color: #fff; }
-.footer-links { display: flex; justify-content: center; gap: 20px; }
-.footer-nav-link {
-  color: rgba(255,255,255,.6); text-decoration: none; font-size: .84rem; font-weight: 600;
-  transition: color .15s;
-}
+.footer-links { display: flex; justify-content: center; gap: var(--sp-6); }
+.footer-nav-link { color: rgba(255,255,255,.55); font-size: .84rem; font-weight: 600; transition: color .15s; }
 .footer-nav-link:hover { color: var(--gold); }
-.footer-info { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; font-size: .83rem; }
-.footer-link { color: inherit; text-decoration: none; }
+.footer-meta { display: flex; gap: var(--sp-5); justify-content: center; flex-wrap: wrap; font-size: .83rem; align-items: center; }
+.footer-link { display: flex; align-items: center; gap: var(--sp-1); color: inherit; }
 .footer-link:hover { color: var(--gold); }
-.footer-info strong { color: var(--gold); }
-.footer-copy { font-size: .76rem; opacity: .5; }
+.footer-link strong { color: var(--gold); }
+.footer-copy { font-size: .75rem; opacity: .45; }
 
 /* ── Responsive ── */
-@media (max-width: 900px) {
-  .install-label { display: none; }
-}
+@media (max-width: 860px) { .install-label { display: none; } }
 @media (max-width: 640px) {
-  .navbar { padding: 0 14px; height: 58px; }
-  .username { display: none; }
-  .brand-en { display: none; }
-  .nav-label { display: none; }
-  .nav-link { padding: 7px 10px; }
-  .login-label { display: none; }
-  .footer-info { gap: 12px; font-size: .78rem; }
-  .app-footer { padding: 20px 16px; }
+  .navbar { padding: 0 var(--sp-4); height: 56px; }
+  .username, .brand-en { display: none; }
+  .nav-label, .login-label { display: none; }
+  .nav-link { padding: 7px var(--sp-2); }
+  .footer-meta { gap: var(--sp-3); font-size: .78rem; }
 }
 @media (max-width: 380px) {
   .brand-ar { font-size: .78rem; }
