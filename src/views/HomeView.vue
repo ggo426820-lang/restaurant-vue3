@@ -120,7 +120,7 @@
       </div>
 
       <!-- States -->
-      <LoadingSpinner v-if="store.loading" :full="true" label="Loading branches…" />
+      <BranchSkeleton v-if="store.loading" :mode="store.viewMode" :count="6" />
 
       <template v-else-if="store.restaurants.length === 0">
         <div class="empty-state" role="status">
@@ -256,7 +256,7 @@
 import { ref, onMounted } from 'vue'
 import DefaultLayout from '../layouts/DefaultLayout.vue'
 import RestaurantCard from '../components/RestaurantCard.vue'
-import LoadingSpinner from '../components/LoadingSpinner.vue'
+import BranchSkeleton from '../components/BranchSkeleton.vue'
 import { useRestaurantStore } from '../stores/restaurantStore'
 import { useAuthStore } from '../stores/authStore'
 import { useToast } from '../composables/useToast'
