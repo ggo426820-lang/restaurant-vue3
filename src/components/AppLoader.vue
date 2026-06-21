@@ -157,14 +157,14 @@ onMounted(() => {
     progress.value = p
   }, 40)
 
-  /* Minimum 1.4 s display so the shimmer always plays a full cycle */
+  /* Minimum 1.2 s display so the shimmer always plays a full cycle */
   pTimer = setTimeout(() => {
     clearInterval(pInterval)
     progress.value = 100
     setTimeout(() => {
       visible.value = false
-    }, 220) // small pause at 100% before fade-out
-  }, 1400)
+    }, 180)
+  }, 1200)
 })
 
 onBeforeUnmount(() => {

@@ -2,14 +2,16 @@
   <AppLoader v-if="loading" @done="loading = false" />
 
   <Transition name="page-reveal">
-    <ErrorBoundary v-if="!loading">
-      <router-view v-slot="{ Component, route }">
-        <Transition name="page" mode="out-in">
-          <component :is="Component" :key="route.path" />
-        </Transition>
-      </router-view>
-      <AppToast />
-    </ErrorBoundary>
+    <div v-if="!loading" class="app-body">
+      <ErrorBoundary>
+        <router-view v-slot="{ Component, route }">
+          <Transition name="page" mode="out-in">
+            <component :is="Component" :key="route.path" />
+          </Transition>
+        </router-view>
+        <AppToast />
+      </ErrorBoundary>
+    </div>
   </Transition>
 </template>
 
@@ -31,6 +33,9 @@ onMounted(async () => {
 </script>
 
 <style>
+/* App body wrapper */
+.app-body { min-height: 100vh; display: flex; flex-direction: column; }
+
 /* ══════════════════════════════════════════════
    DESIGN TOKENS  —  single source of truth
 ══════════════════════════════════════════════ */

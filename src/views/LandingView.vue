@@ -1,178 +1,211 @@
 <template>
   <DefaultLayout>
 
-    <!-- ══ HERO — full-screen cinematic ══ -->
+    <!-- ══ HERO — full-screen video (exact match to official site) ══ -->
     <section class="land-hero" aria-label="Hero">
-      <div class="hero-bg" :style="{ backgroundImage: `url('/hero-bg.webp')` }"></div>
-      <div class="hero-overlay"></div>
-      <!-- Hero character — start side -->
-      <div class="hero-char" aria-hidden="true">
-        <img src="/hero-section.webp" alt="" class="hero-char-img" />
-      </div>
+      <!-- Video backgrounds -->
+      <video
+        ref="heroVideoDesktop"
+        class="hero-video hero-video-desktop"
+        autoplay muted loop playsinline
+        poster="/hero-bg.webp"
+      >
+        <source src="https://cdn.jsdelivr.net/gh/innovationscope/website-videos@main/promo_final_colored_horizontal_compressed.m4v" type="video/mp4" />
+      </video>
+      <video
+        ref="heroVideoMobile"
+        class="hero-video hero-video-mobile"
+        autoplay muted loop playsinline
+        poster="/hero-bg.webp"
+      >
+        <source src="https://cdn.jsdelivr.net/gh/innovationscope/website-videos@main/promo_final_colored_vertical_compressed.m4v" type="video/mp4" />
+      </video>
 
-      <div class="hero-content" :class="{ 'fade-in': heroVisible }" ref="heroRef">
-        <p class="hero-eyebrow">{{ t('مرحبا بكم في', 'Welcome to') }}</p>
-        <h1 class="hero-headline">
-          {{ t('إمبراطورية أبو طارق', 'The Empire of Abou Tarek') }}
-        </h1>
-        <p class="hero-desc">
-          {{ t(
-            'منذ الخمسينيات، يقدم كشري أبو طارق الأكلة الشعبية المصرية الأصيلة للملايين في مصر والعالم.',
-            'Since the 1950s, Koshary Abou Tarek has served Egypt\'s beloved national dish to millions across Egypt and the world.'
-          ) }}
-        </p>
-        <div class="hero-cta">
-          <router-link to="/branches" class="btn-hero-primary">
-            {{ t('اكتشف الفروع', 'Explore Branches') }}
-          </router-link>
-          <a href="#history" class="btn-hero-ghost">
-            {{ t('تعرف علينا', 'Our Story') }}
-          </a>
-        </div>
-      </div>
-      <!-- Scroll indicator -->
-      <div class="scroll-hint" aria-hidden="true">
-        <div class="scroll-mouse">
-          <div class="scroll-wheel"></div>
-        </div>
+      <!-- Gradient overlay: transparent → #282828 (exact official gradient) -->
+      <div class="hero-gradient-overlay"></div>
+
+      <!-- Text content -->
+      <div class="hero-content" :class="{ 'visible': heroVisible }">
+        <p class="hero-welcome">{{ t('مرحبًا بكم في', 'Welcome to') }}</p>
+        <h1 class="hero-empire">{{ t('إمبراطورية أبو طارق', 'The Empire of Abou Tarek') }}</h1>
       </div>
     </section>
 
-    <!-- ══ SEPARATOR ══ -->
-    <div class="section-separator" aria-hidden="true">
-      <img src="/separator.png" alt="" class="separator-img" />
+    <!-- ══ ABOUT — hero character section (matches /about-us) ══ -->
+    <section class="about-hero-section" :style="{ backgroundImage: 'url(/About-bg.webp)' }">
+      <div class="about-hero-inner">
+        <div class="about-char-wrap">
+          <img src="/hero-section.webp" alt="" class="about-char-img" />
+        </div>
+        <p class="about-hero-eyebrow">{{ t('من نحن', 'About Us') }}</p>
+        <h2 class="about-hero-title">{{ t('إمبراطورية الكشري المصري منذ الخمسينيات', 'Egypt\'s Koshary Empire Since the 1950s') }}</h2>
+        <p class="about-hero-desc">{{ t(
+          'في الخمسينيات، انطلقت قصة كشري أبو طارق من عربة صغيرة في شوارع وسط القاهرة. بوصفة سرية وحب أصيل لإطعام الناس، نجح أبو طارق في تحويل أكلة شعبية بسيطة إلى تجربة لا تُنسى. اليوم، يستقبل المطعم الأسطوري من 4 طوابق الزوار يومياً من كل أنحاء العالم.',
+          'In the 1950s, Koshary Abou Tarek\'s story began with a small cart on the streets of Downtown Cairo. With a secret recipe and a genuine love for feeding people, Abou Tarek transformed a simple folk dish into an unforgettable experience. Today, the legendary 4-story restaurant welcomes visitors daily from all over the world.'
+        ) }}</p>
+        <router-link to="/about" class="about-hero-btn">
+          {{ t('اقرأ أكثر', 'Read More') }}
+        </router-link>
+      </div>
+      <div class="about-hero-dark"></div>
+    </section>
+
+    <!-- ══ SEPARATORS ══ -->
+    <!-- Desktop: masked separator -->
+    <div class="separator-desktop" aria-hidden="true">
+      <div class="separator-masked" :style="{
+        backgroundImage: 'url(/MainHomeSeparator.webp)',
+        maskImage: 'url(/HomeSeparator2.png)',
+        WebkitMaskImage: 'url(/HomeSeparator2.png)'
+      }"></div>
+    </div>
+    <!-- Mobile -->
+    <div class="separator-mobile" aria-hidden="true">
+      <img src="/separator.png" alt="" class="separator-mobile-img" />
     </div>
 
-    <!-- ══ HISTORY / WHO WE ARE ══ -->
-    <section class="history-section" id="history" aria-labelledby="history-heading">
-      <div class="history-inner">
-        <div class="section-label-row">
-          <span class="section-eyebrow">{{ t('من نحن', 'About Us') }}</span>
-          <h2 id="history-heading" class="section-big-title">{{ t('تاريخ أبو طارق', 'The Abou Tarek Story') }}</h2>
+    <!-- ══ FEATURED NEWS 1 — text start / image end ══ -->
+    <div class="featured-news-wrap">
+      <article class="featured-article featured-article-1">
+        <div class="featured-text">
+          <h2 class="featured-title">{{ t(
+            'كشري أبو طارق يدخل موسوعة جينيس بأكبر طبق كشري في العالم',
+            'Koshary Abou Tarek Enters Guinness with the World\'s Largest Koshary Dish'
+          ) }}</h2>
+          <p class="featured-desc">{{ t(
+            'حقق كشري أبو طارق رقمًا قياسيًا في موسوعة غينيس للأرقام القياسية بتحضير أكبر طبق كشري في التاريخ، في احتفالية وطنية كبرى جمعت آلاف المصريين.',
+            'Koshary Abou Tarek set a Guinness World Record by preparing the largest koshary dish in history, in a grand national celebration that brought together thousands of Egyptians.'
+          ) }}</p>
+          <router-link to="/news" class="featured-btn">{{ t('اقرأ أكثر', 'Read More') }}</router-link>
         </div>
+        <div class="featured-image">
+          <img src="/branch1.png" alt="" class="featured-img" />
+        </div>
+      </article>
 
-        <!-- Video block -->
-        <div class="video-block">
-          <div class="video-frame">
-            <div class="video-placeholder">
-              <div class="play-btn" aria-label="Play video">
-                <svg viewBox="0 0 24 24" fill="white" width="32" height="32"><path d="M8 5v14l11-7z"/></svg>
-              </div>
-              <div class="video-caption">{{ t('شاهد قصتنا', 'Watch Our Story') }}</div>
-            </div>
-          </div>
+      <!-- ══ FEATURED NEWS 2 — image start / text end ══ -->
+      <article class="featured-article featured-article-2">
+        <div class="featured-image">
+          <img src="/branch1.png" alt="" class="featured-img" />
         </div>
+        <div class="featured-text">
+          <h2 class="featured-title">{{ t(
+            'TasteAtlas تختار كشري أبو طارق ضمن أفضل ١٠٠ مطعم أسطوري',
+            'TasteAtlas Names Koshary Abou Tarek Among Top 100 Legendary Restaurants'
+          ) }}</h2>
+          <p class="featured-desc">{{ t(
+            'حصد المطعم الأسطوري لقب "مطعم أسطوري" من موقع TasteAtlas الشهير للمطاعم والأكلات الشعبية، ليكون الأول مصريًا وعربيًا في هذه القائمة المرموقة.',
+            'The legendary restaurant earned the "Legendary Restaurant" title from TasteAtlas, the renowned food and travel guide, becoming the first Egyptian and Arab entry on this prestigious list.'
+          ) }}</p>
+          <router-link to="/news" class="featured-btn">{{ t('اقرأ أكثر', 'Read More') }}</router-link>
+        </div>
+      </article>
+    </div>
 
-        <!-- History text -->
-        <div class="history-grid">
-          <div class="history-card">
-            <div class="history-icon">🏺</div>
-            <h3>{{ t('البداية ١٩٥٠', 'The Beginning — 1950') }}</h3>
-            <p>{{ t(
-              'بدأت رحلة كشري أبو طارق من عربة متجولة في شوارع وسط القاهرة، حاملةً وصفة سرية وحبًا أصيلًا لإطعام الناس.',
-              'The journey began with a humble street cart in Downtown Cairo, carrying a secret recipe and an authentic love for feeding people.'
-            ) }}</p>
-          </div>
-          <div class="history-card">
-            <div class="history-icon">🏛️</div>
-            <h3>{{ t('معلم وسط البلد', 'Downtown Landmark') }}</h3>
-            <p>{{ t(
-              'أصبح المطعم معلمًا أسطوريًا من 4 طوابق في شارع شامبليون، يستقبل آلاف الزوار يوميًا من كل أنحاء العالم.',
-              'The restaurant became a legendary 4-story landmark on Champollion Street, welcoming thousands of visitors daily from around the world.'
-            ) }}</p>
-          </div>
-          <div class="history-card">
-            <div class="history-icon">🌍</div>
-            <h3>{{ t('اليونسكو والعالم', 'UNESCO & The World') }}</h3>
-            <p>{{ t(
-              'اختارت اليونسكو كشري أبو طارق ممثلًا رسميًا للمطبخ الشعبي المصري، بعد إدراج "الكشري" في قائمة التراث الثقافي غير المادي.',
-              'UNESCO selected Koshary Abou Tarek as the official representative of Egyptian folk cuisine, after "Koshary" was inscribed on the Intangible Cultural Heritage list.'
-            ) }}</p>
-          </div>
-        </div>
-        <div class="history-read-more">
-          <router-link to="/about" class="btn-outline">
-            {{ t('اقرأ أكثر', 'Read More') }}
-          </router-link>
-        </div>
-      </div>
-    </section>
-
-    <!-- ══ ACHIEVEMENTS ══ -->
-    <section class="achievements-section" aria-labelledby="achievements-heading">
-      <div class="achievements-inner">
-        <div class="achievement-feature">
-          <div class="ach-img-wrap">
-            <div class="ach-img-placeholder">
-              <span class="ach-trophy">🏆</span>
-            </div>
-          </div>
-          <div class="ach-text">
-            <span class="ach-eyebrow">{{ t('إنجاز عالمي', 'World Achievement') }}</span>
-            <h2 class="ach-title">{{ t('مصر تدخل جينيس بأكبر كشري في العالم', 'Egypt Enters Guinness with the World\'s Largest Koshary') }}</h2>
-            <p class="ach-desc">{{ t(
-              'حقق كشري أبو طارق رقمًا قياسيًا في موسوعة غينيس للأرقام القياسية بتحضير أكبر طبق كشري في التاريخ، في احتفالية وطنية كبرى.',
-              'Koshary Abou Tarek set a Guinness World Record by preparing the largest koshary dish in history, in a grand national celebration.'
-            ) }}</p>
-            <a href="https://www.guinnessworldrecords.com" target="_blank" rel="noopener" class="btn-outline">
-              {{ t('اقرأ أكثر', 'Read More') }}
-            </a>
-          </div>
-        </div>
-
-        <div class="stats-row">
-          <div class="stat-card">
-            <span class="stat-big">70+</span>
-            <span class="stat-lbl">{{ t('عامًا من الخبرة', 'Years of Excellence') }}</span>
-          </div>
-          <div class="stat-card">
-            <span class="stat-big">6+</span>
-            <span class="stat-lbl">{{ t('فروع في 3 دول', 'Branches in 3 Countries') }}</span>
-          </div>
-          <div class="stat-card">
-            <span class="stat-big">4</span>
-            <span class="stat-lbl">{{ t('طوابق في وسط البلد', 'Floors Downtown Cairo') }}</span>
-          </div>
-          <div class="stat-card">
-            <span class="stat-big">🏆</span>
-            <span class="stat-lbl">{{ t('جينيس العالمية', 'Guinness World Record') }}</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ══ NEWS ══ -->
+    <!-- ══ NEWS GRID ══ -->
     <section class="news-section" aria-labelledby="news-heading">
       <div class="news-inner">
         <div class="news-header">
-          <h2 id="news-heading" class="section-big-title">{{ t('أخبار أبو طارق', 'Abou Tarek News') }}</h2>
-          <router-link to="/news" class="btn-outline sm">{{ t('كل الأخبار', 'All News') }}</router-link>
+          <p class="news-eyebrow">{{ t('آخر الأخبار', 'Recent News') }}</p>
+          <h2 id="news-heading" class="news-main-title">{{ t('أخبار أبو طارق', 'Abou Tarek News') }}</h2>
         </div>
         <div class="news-grid">
           <article v-for="article in newsItems" :key="article.id" class="news-card">
-            <div class="news-thumb">
-              <div class="news-thumb-inner">{{ article.emoji }}</div>
+            <div class="news-card-thumb">
+              <div class="news-card-thumb-inner" :style="{ background: article.color }">
+                <span class="news-card-emoji">{{ article.emoji }}</span>
+              </div>
             </div>
-            <div class="news-body">
-              <span class="news-tag">{{ t(article.tagAr, article.tagEn) }}</span>
-              <h3 class="news-title">{{ t(article.titleAr, article.titleEn) }}</h3>
-              <p class="news-excerpt">{{ t(article.excerptAr, article.excerptEn) }}</p>
-              <span class="news-date">{{ article.date }}</span>
+            <div class="news-card-body">
+              <div class="news-card-top">
+                <h3 class="news-card-title">{{ t(article.titleAr, article.titleEn) }}</h3>
+                <svg class="news-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                  :class="{ 'rotated': isAR }">
+                  <path d="M7 17L17 7M17 7H7M17 7V17" stroke="#1D1B1B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <p class="news-card-desc">{{ t(article.descAr, article.descEn) }}</p>
             </div>
           </article>
+        </div>
+        <div class="news-more">
+          <router-link to="/news" class="news-more-btn">{{ t('كل الأخبار', 'View All News') }}</router-link>
         </div>
       </div>
     </section>
 
-    <!-- ══ ORDER CTA ══ -->
-    <section class="order-cta" aria-labelledby="order-heading">
-      <div class="order-inner">
-        <h2 id="order-heading">{{ t('اطلب كشري أبو طارق الآن', 'Order Koshary Abou Tarek Now') }}</h2>
-        <p>{{ t('توصيل يومي من الساعة ٧ صباحًا حتى ١٠ مساءً', 'Daily delivery from 7 AM to 10 PM') }}</p>
-        <a href="tel:16011" class="cta-phone">
-          <AppIcon name="phone" :size="20" />
-          <span>16011</span>
-        </a>
+    <!-- ══ VR / EXPERIENCE CTA ══ -->
+    <section class="vr-section">
+      <div class="vr-inner" :style="{ backgroundImage: 'url(/VRbg.webp)' }">
+        <div class="vr-content">
+          <h2 class="vr-title">{{ t('اكتشف تجربة كشري أبو طارق', 'Experience Koshary Abou Tarek') }}</h2>
+          <p class="vr-desc">{{ t(
+            'زور مطعمنا الأسطوري في قلب وسط القاهرة واكتشف سر الوصفة التي أبهرت ملايين الزوار من أنحاء العالم.',
+            'Visit our legendary restaurant in the heart of Downtown Cairo and discover the secret recipe that has amazed millions of visitors from around the world.'
+          ) }}</p>
+          <a href="https://storage.net-fs.com/hosting/7825364/32/" target="_blank" rel="noopener" class="vr-btn">
+            {{ t('تفضل بزيارتنا', 'Visit Us') }}
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ STATS ══ -->
+    <section class="stats-section">
+      <div class="stats-inner">
+        <div class="stat-item">
+          <span class="stat-num">70+</span>
+          <span class="stat-lbl">{{ t('عامًا من الخبرة', 'Years of Excellence') }}</span>
+        </div>
+        <div class="stat-divider" aria-hidden="true"></div>
+        <div class="stat-item">
+          <span class="stat-num">6+</span>
+          <span class="stat-lbl">{{ t('فروع في 3 دول', 'Branches in 3 Countries') }}</span>
+        </div>
+        <div class="stat-divider" aria-hidden="true"></div>
+        <div class="stat-item">
+          <span class="stat-num">4</span>
+          <span class="stat-lbl">{{ t('طوابق في وسط البلد', 'Floors Downtown Cairo') }}</span>
+        </div>
+        <div class="stat-divider" aria-hidden="true"></div>
+        <div class="stat-item">
+          <span class="stat-num">🏆</span>
+          <span class="stat-lbl">{{ t('سجل غينيس', 'Guinness World Record') }}</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ REVIEWS / TESTIMONIALS ══ -->
+    <section class="reviews-section">
+      <div class="reviews-header">
+        <p class="reviews-eyebrow">{{ t('آراء عملائنا', 'Client Testimonials') }}</p>
+        <h2 class="reviews-title">{{ t('ماذا يقولون عنّا', 'What They Say About Us') }}</h2>
+      </div>
+      <div class="reviews-track-wrap" :style="{ backgroundImage: 'url(/Testimonialsbg.png)' }">
+        <div class="reviews-overlay"></div>
+        <div class="reviews-track" ref="reviewsTrack"
+          :style="{ transform: `translateX(${isAR ? reviewOffset : -reviewOffset}px)` }">
+          <div v-for="(r, i) in reviews" :key="i" class="review-card">
+            <p class="review-text">"{{ t(r.textAr, r.textEn) }}"</p>
+            <div class="review-footer">
+              <div class="review-stars">
+                <span v-for="s in 5" :key="s" class="star" :class="{ filled: s <= r.rating }">★</span>
+              </div>
+              <div class="review-author">
+                <span class="review-name">{{ r.name }}</span>
+                <span class="review-role">{{ t(r.roleAr, r.roleEn) }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="reviews-nav">
+          <button class="rev-btn" @click="prevReview" :disabled="reviewIndex === 0" :aria-label="t('السابق','Previous')">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+          <button class="rev-btn" @click="nextReview" :disabled="reviewIndex >= maxIndex" :aria-label="t('التالي','Next')">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+        </div>
       </div>
     </section>
 
@@ -180,322 +213,439 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import DefaultLayout from '../layouts/DefaultLayout.vue'
-import AppIcon from '../components/AppIcon.vue'
 import { useLanguage } from '../composables/useLanguage'
 import { usePageMeta } from '../composables/usePageMeta'
 
-const { t } = useLanguage()
+const { t, isAR } = useLanguage()
 usePageMeta({ title: 'إمبراطورية أبو طارق', description: 'Koshary Abou Tarek — Egypt\'s legendary koshary since the 1950s' })
 
-const heroRef    = ref(null)
 const heroVisible = ref(false)
-
-onMounted(() => {
-  setTimeout(() => { heroVisible.value = true }, 80)
-})
+onMounted(() => setTimeout(() => { heroVisible.value = true }, 80))
 
 const newsItems = [
   {
-    id: 1, emoji: '🏆',
-    tagAr: 'إنجاز', tagEn: 'Achievement',
-    titleAr: 'كشري أبو طارق يدخل موسوعة جينيس بأكبر طبق كشري',
-    titleEn: 'Koshary Abou Tarek Enters Guinness with World\'s Largest Koshary Dish',
-    excerptAr: 'حقق المطعم الأسطوري رقمًا قياسيًا عالميًا بتحضير أكبر طبق كشري في التاريخ.',
-    excerptEn: 'The legendary restaurant set a world record by preparing the largest koshary dish in history.',
-    date: '2024'
+    id: 1, emoji: '🏆', color: 'linear-gradient(135deg,#1a0a0a,#3d1515)',
+    titleAr: 'كشري أبو طارق يدخل موسوعة جينيس',
+    titleEn: 'Koshary Abou Tarek Enters Guinness World Records',
+    descAr: 'رقم قياسي عالمي بأكبر طبق كشري في التاريخ في احتفالية وطنية كبرى.',
+    descEn: 'A world record for the largest koshary dish in history at a grand national celebration.'
   },
   {
-    id: 2, emoji: '🎖️',
-    tagAr: 'تميّز', tagEn: 'Recognition',
-    titleAr: 'TasteAtlas تختار كشري أبو طارق ضمن أفضل ١٠٠ مطعم أسطوري',
-    titleEn: 'TasteAtlas Lists Koshary Abou Tarek Among Top 100 Legendary Restaurants',
-    excerptAr: 'حصد المطعم لقب "أسطوري" من موقع TasteAtlas الشهير ليكون الأول مصريًا.',
-    excerptEn: 'The restaurant earned the "Legendary" title from TasteAtlas, becoming the first Egyptian entry.',
-    date: '2024'
+    id: 2, emoji: '⭐', color: 'linear-gradient(135deg,#0a1a2a,#153050)',
+    titleAr: 'TasteAtlas: أفضل ١٠٠ مطعم أسطوري في العالم',
+    titleEn: 'TasteAtlas: Top 100 Legendary Restaurants',
+    descAr: 'المطعم الأول عربيًا ومصريًا يحصل على لقب "مطعم أسطوري" من TasteAtlas.',
+    descEn: 'The first Egyptian and Arab restaurant to earn the "Legendary" title from TasteAtlas.'
   },
   {
-    id: 3, emoji: '🌍',
-    tagAr: 'توسع', tagEn: 'Expansion',
-    titleAr: 'كشري أبو طارق يفتتح فرعًا جديدًا في المملكة العربية السعودية',
-    titleEn: 'Koshary Abou Tarek Opens New Branch in Saudi Arabia',
-    excerptAr: 'يواصل المطعم توسعه في منطقة الخليج العربي بافتتاح فرع جديد في المملكة.',
-    excerptEn: 'The restaurant continues its Gulf expansion with a new branch in Saudi Arabia.',
-    date: '2023'
+    id: 3, emoji: '🌍', color: 'linear-gradient(135deg,#0a1a0a,#153015)',
+    titleAr: 'توسع دولي: فروع في الإمارات والسعودية',
+    titleEn: 'Global Expansion: Branches in UAE & Saudi Arabia',
+    descAr: 'يواصل كشري أبو طارق توسعه الدولي بفروع جديدة في دول الخليج العربي.',
+    descEn: 'Koshary Abou Tarek continues its international expansion with new branches across the Gulf.'
   }
 ]
+
+const reviews = [
+  {
+    textAr: 'تجربة لا تُنسى! الكشري هنا له طعم مختلف تمامًا عن أي مكان آخر. المكان نظيف والخدمة سريعة والأسعار معقولة جدًا.',
+    textEn: 'An unforgettable experience! The koshary here has a completely different taste from anywhere else. Clean place, fast service, and very reasonable prices.',
+    name: 'أحمد محمد', nameEn: 'Ahmed Mohamed', rating: 5,
+    roleAr: 'عميل منتظم', roleEn: 'Regular Customer'
+  },
+  {
+    textAr: 'زرت المطعم لأول مرة في رحلتي إلى القاهرة ووجدته في قائمة أفضل مطاعم مصر. والله يستاهل كل كلمة مدح!',
+    textEn: 'I visited the restaurant for the first time on my trip to Cairo after finding it on Egypt\'s best restaurants list. It truly deserves every word of praise!',
+    name: 'سارة خالد', rating: 5,
+    roleAr: 'زائرة من الكويت', roleEn: 'Visitor from Kuwait'
+  },
+  {
+    textAr: 'أكلت الكشري في أماكن كثيرة لكن أبو طارق له مذاق خاص. الصلصة والدقة مختلفة. شكرًا على الاستقبال الجميل دائمًا.',
+    textEn: 'I\'ve had koshary in many places but Abou Tarek has a special flavor. The sauce and precision are different. Thank you for the wonderful reception always.',
+    name: 'محمد علي', rating: 5,
+    roleAr: 'من القاهرة', roleEn: 'From Cairo'
+  },
+  {
+    textAr: 'المطعم ذو التاريخ العريق يحافظ على جودته منذ سنوات. الكشري هنا هو الأصل والباقي تقليد.',
+    textEn: 'This historic restaurant has maintained its quality for years. The koshary here is the original, everything else is an imitation.',
+    name: 'فاطمة إبراهيم', rating: 5,
+    roleAr: 'من الإسكندرية', roleEn: 'From Alexandria'
+  },
+  {
+    textAr: 'تجربة رائعة في مطعم بتاريخ أكثر من 70 سنة. استحق كل لحظة انتظار. سأعود قريبًا بالتأكيد!',
+    textEn: 'An amazing experience at a restaurant with over 70 years of history. Worth every moment of waiting. I will definitely be back soon!',
+    name: 'Omar Hassan', rating: 5,
+    roleAr: 'زائر من الخارج', roleEn: 'International Visitor'
+  }
+]
+
+const reviewIndex = ref(0)
+const cardWidth = 360 + 16
+const maxIndex = computed(() => Math.max(0, reviews.length - 2))
+const reviewOffset = computed(() => reviewIndex.value * cardWidth)
+
+function nextReview() { if (reviewIndex.value < maxIndex.value) reviewIndex.value++ }
+function prevReview() { if (reviewIndex.value > 0) reviewIndex.value-- }
 </script>
 
 <style scoped>
-/* ══ HERO ══ */
+/* ══════════════════════════════════════════════
+   HERO
+══════════════════════════════════════════════ */
 .land-hero {
   position: relative; overflow: hidden;
-  min-height: 100vh; display: flex;
-  align-items: center; justify-content: center;
-}
-/* Hero character image — pinned to start-bottom corner */
-.hero-char {
-  position: absolute; bottom: 0;
-  inset-inline-start: clamp(20px, 6vw, 120px);
-  z-index: 2; pointer-events: none;
-  display: flex; align-items: flex-end;
-}
-.hero-char-img {
-  width: clamp(140px, 18vw, 280px);
-  height: auto; object-fit: contain;
-  filter: drop-shadow(0 8px 32px rgba(0,0,0,.6));
-  animation: charFloat 4s ease-in-out infinite;
-}
-@keyframes charFloat {
-  0%,100% { transform: translateY(0); }
-  50%      { transform: translateY(-10px); }
-}
-.hero-bg {
-  position: absolute; inset: 0; z-index: 0;
-  background-size: cover; background-position: center;
-  background-repeat: no-repeat;
-  background-color: #100303;
-}
-.hero-bg::after {
-  content: '';
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse at 60% 40%, rgba(139,9,32,.75) 0%, transparent 65%),
-    linear-gradient(to bottom, rgba(0,0,0,.55) 0%, rgba(10,2,2,.85) 100%);
-}
-.hero-overlay { position: absolute; inset: 0; z-index: 1; background: rgba(0,0,0,.2); }
-
-.hero-content {
-  position: relative; z-index: 2;
-  max-width: 760px; padding: var(--sp-8);
-  text-align: center;
-  opacity: 0; transform: translateY(30px);
-  transition: opacity .8s ease, transform .8s ease;
-}
-.hero-content.fade-in { opacity: 1; transform: none; }
-
-.hero-eyebrow {
-  font-size: 1rem; color: rgba(255,255,255,.6);
-  letter-spacing: .1em; text-transform: uppercase;
-  margin-bottom: var(--sp-3); font-weight: 500;
-}
-.hero-headline {
-  font-size: clamp(2.5rem, 7vw, 5rem);
-  font-weight: 900; color: #fff; line-height: 1.1;
-  margin: 0 0 var(--sp-5); font-family: 'Cairo', sans-serif;
-  text-shadow: 0 2px 30px rgba(0,0,0,.5);
-}
-.hero-desc {
-  font-size: 1rem; color: rgba(255,255,255,.72);
-  max-width: 560px; margin: 0 auto var(--sp-8);
-  line-height: 1.7;
-}
-.hero-cta { display: flex; gap: var(--sp-3); justify-content: center; flex-wrap: wrap; }
-
-.btn-hero-primary {
-  padding: 14px 36px; background: var(--primary);
-  color: #fff; border-radius: var(--r-xl);
-  font-weight: 800; font-size: 1rem;
-  text-decoration: none; transition: all .2s;
-  box-shadow: 0 6px 24px rgba(200,16,46,.4);
-}
-.btn-hero-primary:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 10px 32px rgba(200,16,46,.5); }
-
-.btn-hero-ghost {
-  padding: 14px 36px; background: rgba(255,255,255,.1);
-  color: rgba(255,255,255,.85);
-  border: 1.5px solid rgba(255,255,255,.25);
-  border-radius: var(--r-xl);
-  font-weight: 700; font-size: 1rem;
-  text-decoration: none; transition: all .2s; backdrop-filter: blur(4px);
-}
-.btn-hero-ghost:hover { background: rgba(255,255,255,.18); border-color: rgba(255,255,255,.4); }
-
-/* Separator */
-.section-separator { text-align: center; padding: var(--sp-4) 0; background: var(--bg); overflow: hidden; }
-.separator-img { max-width: 360px; width: 60%; height: auto; opacity: .6; margin: 0 auto; mix-blend-mode: multiply; }
-[data-theme="dark"] .separator-img { mix-blend-mode: screen; opacity: .25; }
-
-/* Scroll hint */
-.scroll-hint {
-  position: absolute; bottom: var(--sp-6); left: 50%; transform: translateX(-50%);
-  z-index: 2; animation: scrollBounce 2s ease-in-out infinite;
-}
-.scroll-mouse {
-  width: 22px; height: 36px; border: 2px solid rgba(255,255,255,.4);
-  border-radius: 11px; display: flex; justify-content: center; padding-top: 6px;
-}
-.scroll-wheel {
-  width: 3px; height: 8px; background: rgba(255,255,255,.6);
-  border-radius: 2px; animation: wheelMove 2s ease-in-out infinite;
-}
-@keyframes scrollBounce { 0%,100%{opacity:.7} 50%{opacity:1} }
-@keyframes wheelMove { 0%,100%{transform:translateY(0)} 50%{transform:translateY(4px)} }
-
-/* ══ HISTORY ══ */
-.history-section { background: var(--bg); padding: var(--sp-12) 0; }
-.history-inner { max-width: 1100px; margin: 0 auto; padding: 0 var(--sp-8); }
-
-.section-label-row { text-align: center; margin-bottom: var(--sp-8); }
-.section-eyebrow {
-  display: inline-block; font-size: .8rem; font-weight: 700;
-  color: var(--primary); text-transform: uppercase; letter-spacing: .1em;
-  margin-bottom: var(--sp-2); background: var(--primary-light);
-  padding: 4px 14px; border-radius: var(--r-pill);
-}
-.section-big-title {
-  font-size: clamp(1.5rem, 3vw, 2.2rem);
-  font-weight: 900; color: var(--text); margin: var(--sp-2) 0 0;
-}
-
-/* Video */
-.video-block { margin-bottom: var(--sp-10); }
-.video-frame { border-radius: var(--r-2xl); overflow: hidden; box-shadow: var(--shadow-lg); }
-.video-placeholder {
-  background: linear-gradient(135deg, #1a0a0a, #2d1010);
-  aspect-ratio: 16 / 7; display: flex; flex-direction: column;
-  align-items: center; justify-content: center; gap: var(--sp-3);
-  cursor: pointer; transition: filter .2s;
-  border: 1px solid rgba(255,255,255,.06);
-}
-.video-placeholder:hover { filter: brightness(1.1); }
-.play-btn {
-  width: 72px; height: 72px; border-radius: var(--r-pill);
-  background: rgba(200,16,46,.85); display: flex;
-  align-items: center; justify-content: center;
-  box-shadow: 0 6px 24px rgba(200,16,46,.5);
-  transition: transform .2s;
-}
-.play-btn:hover { transform: scale(1.1); }
-.video-caption { font-size: .9rem; color: rgba(255,255,255,.5); }
-
-/* History cards */
-.history-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: var(--sp-5); margin-bottom: var(--sp-6);
-}
-.history-card {
-  background: var(--surface); border: 1.5px solid var(--border);
-  border-radius: var(--r-2xl); padding: var(--sp-6);
-  transition: border-color .2s, box-shadow .2s;
-}
-.history-card:hover { border-color: var(--primary); box-shadow: 0 4px 20px var(--primary-shadow); }
-.history-icon { font-size: 2rem; margin-bottom: var(--sp-3); }
-.history-card h3 { font-size: .95rem; font-weight: 800; color: var(--text); margin: 0 0 var(--sp-2); }
-.history-card p  { font-size: .84rem; color: var(--text-muted); line-height: 1.65; margin: 0; }
-.history-read-more { text-align: center; }
-
-.btn-outline {
-  display: inline-flex; align-items: center; gap: var(--sp-2);
-  padding: 10px 28px; border: 2px solid var(--primary);
-  color: var(--primary); border-radius: var(--r-xl);
-  font-weight: 700; font-size: .9rem; text-decoration: none;
-  transition: all .2s;
-}
-.btn-outline:hover { background: var(--primary); color: #fff; }
-.btn-outline.sm { padding: 7px 20px; font-size: .82rem; }
-
-/* ══ ACHIEVEMENTS ══ */
-.achievements-section {
-  background: linear-gradient(180deg, var(--surface) 0%, var(--bg) 100%);
-  padding: var(--sp-12) 0;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-}
-.achievements-inner { max-width: 1100px; margin: 0 auto; padding: 0 var(--sp-8); }
-
-.achievement-feature {
-  display: grid; grid-template-columns: 1fr 1.2fr;
-  gap: var(--sp-10); align-items: center; margin-bottom: var(--sp-10);
-}
-.ach-img-wrap { border-radius: var(--r-2xl); overflow: hidden; }
-.ach-img-placeholder {
-  aspect-ratio: 4/3; background: linear-gradient(135deg, #1a0a0a, #3d1515);
+  height: 100vh; min-height: 600px;
   display: flex; align-items: center; justify-content: center;
-  border-radius: var(--r-2xl); border: 1px solid rgba(255,255,255,.06);
-}
-.ach-trophy { font-size: 5rem; filter: drop-shadow(0 4px 16px rgba(245,166,35,.4)); }
-.ach-eyebrow {
-  display: inline-block; font-size: .78rem; font-weight: 700;
-  color: var(--gold); background: var(--gold-light);
-  padding: 3px 12px; border-radius: var(--r-pill);
-  text-transform: uppercase; letter-spacing: .08em; margin-bottom: var(--sp-3);
-}
-.ach-title { font-size: clamp(1.2rem, 2.5vw, 1.8rem); font-weight: 900; color: var(--text); margin: 0 0 var(--sp-4); line-height: 1.3; }
-.ach-desc  { font-size: .9rem; color: var(--text-muted); line-height: 1.7; margin: 0 0 var(--sp-5); }
-
-.stats-row {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--sp-4);
-}
-.stat-card {
-  background: var(--surface); border: 1.5px solid var(--border);
-  border-radius: var(--r-2xl); padding: var(--sp-6);
-  text-align: center; display: flex; flex-direction: column;
-  gap: var(--sp-2); transition: border-color .2s;
-}
-.stat-card:hover { border-color: var(--gold); }
-.stat-big { font-size: 2.2rem; font-weight: 900; color: var(--gold); line-height: 1; }
-.stat-lbl { font-size: .8rem; color: var(--text-muted); line-height: 1.4; }
-
-/* ══ NEWS ══ */
-.news-section { padding: var(--sp-12) 0; background: var(--bg); }
-.news-inner { max-width: 1100px; margin: 0 auto; padding: 0 var(--sp-8); }
-.news-header {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: var(--sp-6); flex-wrap: wrap; gap: var(--sp-4);
-}
-.news-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-5); }
-.news-card {
-  background: var(--surface); border: 1.5px solid var(--border);
-  border-radius: var(--r-2xl); overflow: hidden;
-  transition: border-color .2s, box-shadow .2s, transform .2s;
-  cursor: pointer;
-}
-.news-card:hover { border-color: var(--primary); box-shadow: var(--shadow-md); transform: translateY(-3px); }
-.news-thumb { aspect-ratio: 16/9; background: linear-gradient(135deg, #1a0a0a, #2d1515); display: flex; align-items: center; justify-content: center; }
-.news-thumb-inner { font-size: 3.5rem; filter: drop-shadow(0 2px 8px rgba(0,0,0,.4)); }
-.news-body { padding: var(--sp-4) var(--sp-5); }
-.news-tag {
-  display: inline-block; font-size: .72rem; font-weight: 700;
-  color: var(--primary); background: var(--primary-light);
-  padding: 2px 10px; border-radius: var(--r-pill);
-  text-transform: uppercase; letter-spacing: .05em; margin-bottom: var(--sp-2);
-}
-.news-title   { font-size: .95rem; font-weight: 800; color: var(--text); margin: 0 0 var(--sp-2); line-height: 1.4; }
-.news-excerpt { font-size: .81rem; color: var(--text-muted); line-height: 1.6; margin: 0 0 var(--sp-3); }
-.news-date    { font-size: .75rem; color: var(--text-muted); }
-
-/* ══ ORDER CTA ══ */
-.order-cta {
-  background: var(--hero-gradient);
-  padding: var(--sp-10) var(--sp-8); text-align: center;
-}
-.order-inner { max-width: 600px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: var(--sp-4); }
-.order-cta h2 { font-size: clamp(1.3rem, 3vw, 2rem); font-weight: 900; color: #fff; margin: 0; }
-.order-cta p  { color: rgba(255,255,255,.72); font-size: .9rem; margin: 0; }
-.cta-phone {
-  display: inline-flex; align-items: center; gap: var(--sp-3);
-  background: var(--gold); color: #1a0a0a;
-  padding: 14px 40px; border-radius: var(--r-xl);
-  font-size: 1.6rem; font-weight: 900; text-decoration: none;
-  box-shadow: 0 6px 24px rgba(245,166,35,.4);
-  transition: all .2s; letter-spacing: .06em;
-}
-.cta-phone:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(245,166,35,.5); }
-
-/* ── Responsive ── */
-@media (max-width: 900px) {
-  .history-grid { grid-template-columns: 1fr 1fr; }
-  .achievement-feature { grid-template-columns: 1fr; }
-  .stats-row { grid-template-columns: repeat(2, 1fr); }
-  .news-grid { grid-template-columns: 1fr 1fr; }
+  /* Pull hero up to fill under the transparent fixed navbar */
+  margin-top: -72px;
 }
 @media (max-width: 640px) {
-  .history-inner, .achievements-inner, .news-inner { padding: 0 var(--sp-4); }
-  .history-grid { grid-template-columns: 1fr; }
-  .news-grid { grid-template-columns: 1fr; }
-  .stats-row { grid-template-columns: repeat(2, 1fr); }
-  .hero-headline { font-size: 2.2rem; }
+  .land-hero { margin-top: -60px; }
 }
+.hero-video {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; z-index: 0;
+  pointer-events: none;
+}
+.hero-video-desktop { display: block; }
+.hero-video-mobile  { display: none; }
+@media (max-width: 768px) {
+  .hero-video-desktop { display: none; }
+  .hero-video-mobile  { display: block; }
+}
+.hero-gradient-overlay {
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, #282828 100%);
+}
+.hero-content {
+  position: relative; z-index: 2;
+  text-align: center; padding: 0 var(--sp-6);
+  opacity: 0; transform: translateY(20px);
+  transition: opacity .8s ease, transform .8s ease;
+}
+.hero-content.visible { opacity: 1; transform: translateY(0); }
+.hero-welcome {
+  font-size: clamp(1rem, 2.5vw, 1.4rem);
+  font-weight: 300; color: #fff;
+  font-family: 'Poppins', 'Cairo', sans-serif;
+  margin-bottom: var(--sp-3); letter-spacing: .04em;
+}
+.hero-empire {
+  font-size: clamp(2.5rem, 8vw, 6.25rem);
+  font-weight: 300; color: #fff;
+  line-height: 1.1; margin: 0;
+  font-family: 'Cairo', sans-serif;
+}
+
+/* ══════════════════════════════════════════════
+   ABOUT HERO SECTION
+══════════════════════════════════════════════ */
+.about-hero-section {
+  position: relative; overflow: hidden;
+  background-size: cover; background-position: center; background-repeat: no-repeat;
+  background-color: #1a0a0a;
+  padding: clamp(60px, 10vw, 160px) var(--sp-6) clamp(80px, 14vw, 200px);
+  display: flex; align-items: center; justify-content: center;
+}
+.about-hero-dark {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,.3), rgba(10,3,3,.7));
+  pointer-events: none;
+}
+.about-hero-inner {
+  position: relative; z-index: 2;
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  max-width: 800px;
+}
+.about-char-wrap { margin-bottom: var(--sp-6); }
+.about-char-img {
+  width: clamp(200px, 28vw, 350px);
+  height: auto; object-fit: contain;
+  filter: drop-shadow(0 16px 40px rgba(0,0,0,.5));
+}
+.about-hero-eyebrow {
+  font-size: 1.1rem; font-weight: 400;
+  color: rgba(255,255,255,.9);
+  font-family: 'Poppins', sans-serif; letter-spacing: .06em;
+  margin-bottom: var(--sp-3);
+}
+.about-hero-title {
+  font-size: clamp(1.6rem, 4vw, 3.125rem);
+  font-weight: 400; color: #FEFEFE;
+  line-height: 1.2; margin: 0 0 var(--sp-6);
+  font-family: 'Cairo', sans-serif;
+}
+.about-hero-desc {
+  font-size: clamp(.9rem, 1.5vw, 1.125rem);
+  font-weight: 400; color: rgba(255,255,255,.85);
+  line-height: 1.8; max-width: 620px;
+  font-family: 'Poppins', sans-serif;
+  margin-bottom: var(--sp-8);
+}
+.about-hero-btn {
+  display: inline-block;
+  border: 1.5px solid #FEFEFE; color: #FEFEFE;
+  border-radius: 7px; padding: 18px 80px;
+  font-size: 1.125rem; font-weight: 500;
+  font-family: 'Poppins', sans-serif;
+  text-decoration: none;
+  transition: background .2s, color .2s;
+}
+.about-hero-btn:hover { background: #FEFEFE; color: #1D1B1B; }
+
+/* ══════════════════════════════════════════════
+   SEPARATORS
+══════════════════════════════════════════════ */
+.separator-desktop {
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; height: 450px;
+  background: var(--bg);
+}
+.separator-masked {
+  width: 100%; height: 100%;
+  background-size: cover; background-position: top; background-repeat: no-repeat;
+  -webkit-mask-size: contain; mask-size: contain;
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+  -webkit-mask-position: center; mask-position: center;
+}
+.separator-mobile {
+  display: none;
+  padding: var(--sp-8) 0; text-align: center; background: var(--bg);
+}
+.separator-mobile-img {
+  width: 80%; max-width: 340px; height: auto; object-fit: contain; margin: 0 auto;
+  opacity: .6;
+}
+@media (max-width: 768px) {
+  .separator-desktop { display: none; }
+  .separator-mobile  { display: block; }
+}
+
+/* ══════════════════════════════════════════════
+   FEATURED NEWS ARTICLES
+══════════════════════════════════════════════ */
+.featured-news-wrap { display: flex; flex-direction: column; gap: 0; }
+
+.featured-article {
+  display: flex; align-items: stretch;
+  border-radius: 20px; overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,.08);
+  background: #fff; border: 1px solid #f0e0e0;
+  min-height: 500px;
+  max-width: 1200px; margin: 48px auto; width: calc(100% - 64px);
+}
+.featured-article-2 { flex-direction: row-reverse; }
+html[dir="rtl"] .featured-article-1 { flex-direction: row-reverse; }
+html[dir="rtl"] .featured-article-2 { flex-direction: row; }
+
+.featured-text {
+  flex: 0 0 55%; padding: clamp(32px, 5vw, 56px);
+  display: flex; flex-direction: column; justify-content: center; gap: var(--sp-5);
+}
+.featured-title {
+  font-size: clamp(1.3rem, 2.5vw, 2.5rem);
+  font-weight: 500; color: #1D1B1B; line-height: 1.25;
+  font-family: 'Cairo', sans-serif; margin: 0;
+}
+.featured-desc {
+  font-size: clamp(.85rem, 1.4vw, 1.0625rem);
+  color: #646363; line-height: 1.8;
+  font-family: 'Poppins', sans-serif; margin: 0;
+}
+.featured-btn {
+  display: inline-block; width: fit-content;
+  border: 1.5px solid #1D1B1B; color: #1D1B1B;
+  border-radius: 5px; padding: 18px 48px;
+  font-size: 1.125rem; font-weight: 500;
+  font-family: 'Poppins', sans-serif;
+  text-decoration: none;
+  transition: background .2s, color .2s;
+  margin-top: var(--sp-3);
+}
+.featured-btn:hover { background: #1D1B1B; color: #fff; }
+
+.featured-image { flex: 0 0 45%; position: relative; min-height: 450px; overflow: hidden; }
+.featured-img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+}
+
+@media (max-width: 768px) {
+  .featured-article,
+  .featured-article-2,
+  html[dir="rtl"] .featured-article-1,
+  html[dir="rtl"] .featured-article-2 {
+    flex-direction: column; width: calc(100% - 32px); margin: 24px auto;
+  }
+  .featured-text { flex: none; }
+  .featured-image { flex: none; min-height: 280px; }
+}
+
+/* ══════════════════════════════════════════════
+   NEWS GRID
+══════════════════════════════════════════════ */
+.news-section { background: var(--bg); padding: 48px 0; }
+.news-inner { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+.news-header { display: flex; flex-direction: column; align-items: center; margin-bottom: 32px; gap: 6px; text-align: center; }
+.news-eyebrow { font-size: 1.1rem; font-weight: 400; color: #646363; font-family: 'Poppins', sans-serif; }
+.news-main-title { font-size: clamp(2rem, 4vw, 3.125rem); font-weight: 400; color: #1D1B1B; font-family: 'Cairo', sans-serif; margin: 0; }
+.news-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.news-card {
+  background: #FEFEFE; border-radius: 7px;
+  display: flex; flex-direction: column;
+  min-height: 450px;
+  transition: box-shadow .2s, transform .2s;
+  cursor: pointer;
+}
+.news-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,.12); transform: translateY(-3px); }
+.news-card-thumb { width: 100%; aspect-ratio: 16/10; overflow: hidden; border-radius: 7px 7px 0 0; flex-shrink: 0; }
+.news-card-thumb-inner {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+}
+.news-card-emoji { font-size: 3.5rem; }
+.news-card-body { padding: 16px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+.news-card-top { display: flex; justify-content: space-between; align-items: flex-start; width: 100%; }
+.news-card-title { font-size: 1.1rem; font-weight: 800; color: #1D1B1B; font-family: 'Poppins', 'Cairo', sans-serif; line-height: 1.3; width: 80%; }
+.news-arrow { flex-shrink: 0; }
+.news-arrow.rotated { transform: rotate(-90deg); }
+.news-card-desc { font-size: .95rem; color: #808080; font-family: 'Poppins', sans-serif; line-height: 1.6; }
+.news-more { display: flex; justify-content: center; margin-top: 32px; }
+.news-more-btn {
+  border: 1.5px solid #1D1B1B; color: #1D1B1B;
+  border-radius: 5px; padding: 18px 96px;
+  font-size: 1.125rem; font-weight: 500;
+  font-family: 'Poppins', sans-serif; text-decoration: none;
+  transition: background .2s, color .2s; display: inline-block;
+}
+.news-more-btn:hover { background: #1D1B1B; color: #fff; }
+@media (max-width: 768px) { .news-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 540px) { .news-grid { grid-template-columns: 1fr; } }
+
+/* ══════════════════════════════════════════════
+   VR / CTA SECTION
+══════════════════════════════════════════════ */
+.vr-section { display: flex; justify-content: center; padding: 24px; }
+.vr-inner {
+  width: 90%; max-width: 1100px; border-radius: 20px; overflow: hidden;
+  background-size: cover; background-position: center; background-repeat: no-repeat;
+  background-color: #1D1B1B;
+  padding: clamp(48px, 8vw, 96px) var(--sp-8);
+  box-shadow: 0 12px 40px rgba(0,0,0,.2);
+}
+.vr-content { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--sp-5); }
+.vr-title {
+  font-size: clamp(1.6rem, 3.5vw, 2.5rem);
+  font-weight: 400; color: #FEFEFE;
+  font-family: 'Cairo', sans-serif; margin: 0;
+}
+.vr-desc {
+  font-size: clamp(.9rem, 1.4vw, 1.125rem);
+  color: rgba(255,255,255,.85);
+  max-width: 600px; line-height: 1.8;
+  font-family: 'Poppins', sans-serif; margin: 0;
+}
+.vr-btn {
+  display: inline-block;
+  border: 1.5px solid #FEFEFE; color: #FEFEFE;
+  border-radius: 7px; padding: 18px 80px;
+  font-size: 1.125rem; font-weight: 500;
+  font-family: 'Poppins', sans-serif; text-decoration: none;
+  transition: background .2s, color .2s; margin-top: var(--sp-3);
+}
+.vr-btn:hover { background: #FEFEFE; color: #1D1B1B; }
+
+/* ══════════════════════════════════════════════
+   STATS
+══════════════════════════════════════════════ */
+.stats-section { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.stats-inner {
+  max-width: 1100px; margin: 0 auto; padding: 48px 32px;
+  display: flex; align-items: center; justify-content: center; gap: 0;
+  flex-wrap: wrap;
+}
+.stat-item { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 24px 48px; }
+.stat-num { font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 700; color: var(--primary); font-family: 'Cairo', sans-serif; line-height: 1; }
+.stat-lbl { font-size: .9rem; color: #646363; font-family: 'Poppins', sans-serif; text-align: center; }
+.stat-divider { width: 1px; height: 60px; background: var(--border); }
+@media (max-width: 640px) {
+  .stat-divider { display: none; }
+  .stat-item { padding: 16px 24px; }
+}
+
+/* ══════════════════════════════════════════════
+   REVIEWS
+══════════════════════════════════════════════ */
+.reviews-section { background: var(--bg); padding: 48px 0 0; }
+.reviews-header { text-align: center; margin-bottom: 32px; padding: 0 32px; }
+.reviews-eyebrow { font-size: 1.1rem; color: #646363; font-family: 'Poppins', sans-serif; margin-bottom: 6px; }
+.reviews-title { font-size: clamp(2rem, 4vw, 3rem); font-weight: 400; color: #1D1B1B; font-family: 'Cairo', sans-serif; margin: 0; }
+
+.reviews-track-wrap {
+  position: relative; overflow: hidden;
+  min-height: 400px;
+  background-size: cover; background-position: center;
+  background-color: #1D1B1B;
+  padding: 40px 0;
+}
+.reviews-overlay {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,.4); pointer-events: none;
+}
+.reviews-track {
+  position: relative; z-index: 1;
+  display: flex; gap: 16px;
+  padding: 0 40px;
+  transition: transform .5s ease;
+}
+.review-card {
+  flex-shrink: 0; width: 360px;
+  background: #fff; border-radius: 16px;
+  padding: 32px; box-shadow: 0 8px 24px rgba(0,0,0,.12);
+  display: flex; flex-direction: column; justify-content: space-between; gap: 20px;
+}
+.review-text { font-size: .95rem; color: #1D1B1B; line-height: 1.8; font-family: 'Poppins', 'Cairo', sans-serif; font-style: italic; }
+.review-footer { display: flex; flex-direction: column; gap: 8px; }
+.review-stars { display: flex; gap: 2px; }
+.star { font-size: 1.1rem; color: #d1d1d1; }
+.star.filled { color: #FBBF24; }
+.review-author { display: flex; flex-direction: column; }
+.review-name { font-weight: 700; font-size: .95rem; color: #1D1B1B; }
+.review-role { font-size: .8rem; color: #808080; }
+.reviews-nav {
+  position: relative; z-index: 1;
+  display: flex; justify-content: center; gap: 16px; padding: 24px 0;
+}
+.rev-btn {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(255,255,255,.15); border: 1.5px solid rgba(255,255,255,.4);
+  color: #fff; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s;
+}
+.rev-btn:hover:not(:disabled) { background: rgba(255,255,255,.3); }
+.rev-btn:disabled { opacity: .35; cursor: not-allowed; }
+
+/* ══════════════════════════════════════════════
+   DARK MODE OVERRIDES
+══════════════════════════════════════════════ */
+[data-theme="dark"] .featured-article { background: var(--surface); border-color: var(--border); }
+[data-theme="dark"] .featured-title   { color: var(--text); }
+[data-theme="dark"] .featured-desc    { color: var(--text-muted); }
+[data-theme="dark"] .featured-btn     { border-color: var(--text); color: var(--text); }
+[data-theme="dark"] .featured-btn:hover { background: var(--text); color: var(--surface); }
+[data-theme="dark"] .news-card        { background: var(--surface); }
+[data-theme="dark"] .news-card-title  { color: var(--text); }
+[data-theme="dark"] .news-card-desc   { color: var(--text-muted); }
+[data-theme="dark"] .news-arrow path  { stroke: var(--text); }
+[data-theme="dark"] .news-main-title  { color: var(--text); }
+[data-theme="dark"] .news-more-btn    { border-color: var(--text); color: var(--text); }
+[data-theme="dark"] .news-more-btn:hover { background: var(--text); color: var(--bg); }
+[data-theme="dark"] .reviews-title    { color: var(--text); }
+[data-theme="dark"] .stat-lbl         { color: var(--text-muted); }
+[data-theme="dark"] .separator-mobile-img { opacity: .15; mix-blend-mode: screen; }
 </style>

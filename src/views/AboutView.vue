@@ -1,11 +1,12 @@
 <template>
   <DefaultLayout>
-    <!-- Hero -->
-    <section class="page-hero" aria-label="About">
-      <div class="page-hero-inner">
-        <span class="page-eyebrow">{{ t('كشري أبو طارق', 'Koshary Abou Tarek') }}</span>
-        <h1 class="page-hero-title">{{ t('من نحن', 'About Us') }}</h1>
-        <p class="page-hero-sub">{{ t('إمبراطورية الكشري المصري منذ الخمسينيات', 'Egypt\'s Koshary Empire Since the 1950s') }}</p>
+    <!-- Hero — About-bg.webp cinematic (matches official site) -->
+    <section class="about-page-hero" :style="{ backgroundImage: 'url(/About-bg.webp)' }" aria-label="About">
+      <div class="about-page-overlay"></div>
+      <div class="about-page-hero-inner">
+        <img src="/hero-section.webp" alt="" class="about-page-char" />
+        <p class="about-page-eyebrow">{{ t('من نحن', 'About Us') }}</p>
+        <h1 class="about-page-title">{{ t('إمبراطورية الكشري المصري منذ الخمسينيات', 'Egypt\'s Koshary Empire Since the 1950s') }}</h1>
       </div>
     </section>
 
@@ -125,6 +126,39 @@ const values = [
 .page-eyebrow { font-size:.8rem; color:rgba(255,255,255,.6); text-transform:uppercase; letter-spacing:.1em; display:block; margin-bottom:var(--sp-2); }
 .page-hero-title { font-size:clamp(2rem,5vw,3.5rem); font-weight:900; color:#fff; margin:0 0 var(--sp-3); font-family:'Cairo',sans-serif; }
 .page-hero-sub { font-size:1rem; color:rgba(255,255,255,.72); margin:0; }
+
+/* ── About page hero ── */
+.about-page-hero {
+  position: relative; overflow: hidden;
+  background-size: cover; background-position: center; background-repeat: no-repeat;
+  background-color: #1a0a0a;
+  padding: clamp(60px, 10vw, 120px) var(--sp-6) clamp(60px, 12vw, 160px);
+  display: flex; align-items: center; justify-content: center;
+  margin-top: -72px;
+}
+@media (max-width: 640px) { .about-page-hero { margin-top: -60px; } }
+.about-page-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,.35), rgba(10,3,3,.65));
+  pointer-events: none;
+}
+.about-page-hero-inner {
+  position: relative; z-index: 2;
+  display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--sp-4);
+}
+.about-page-char {
+  width: clamp(160px, 22vw, 280px); height: auto; object-fit: contain;
+  filter: drop-shadow(0 12px 32px rgba(0,0,0,.5));
+}
+.about-page-eyebrow {
+  font-size: 1.1rem; font-weight: 400; color: rgba(255,255,255,.9);
+  font-family: 'Poppins', sans-serif; letter-spacing: .06em;
+}
+.about-page-title {
+  font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+  font-weight: 400; color: #FEFEFE; line-height: 1.2;
+  font-family: 'Cairo', sans-serif; margin: 0; max-width: 700px;
+}
 
 /* Body */
 .about-body {}
